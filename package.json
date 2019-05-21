@@ -1,5 +1,5 @@
 {
-  "name": "react-native-video-controls",
+  "name": "react-native-video-mycontrols",
   "version": "2.2.3",
   "description": "A set of GUI controls for the react-native-video component",
   "license": "MIT",
@@ -16,7 +16,7 @@
   "author": "Nubix (https://github.com/itsnubix)",
   "repository": {
     "type": "git",
-    "url": "git@github.com:itsnubix/react-native-video-controls.git"
+    "url": "git@github.com:rafagouveia/react-native-video-mycontrols.git"
   },
   "dependencies": {
     "lodash": "^4.16.4"
