@@ -112,7 +112,7 @@ export default class VideoPlayer extends Component {
             seekPanResponder: PanResponder,
             controlTimeout: null,
             volumeWidth: 150,
-            iconOffset: 0,
+            iconOffset: 7,
             seekWidth: 0,
             ref: Video,
         };
@@ -646,7 +646,7 @@ export default class VideoPlayer extends Component {
      * @return {float} volume handle position in px based on volume
      */
     calculateVolumePositionFromVolume() {
-        return this.player.volumeWidth * this.state.volume;
+        return this.player.volumeWidth / this.state.volume;
     }
 
 
@@ -873,7 +873,8 @@ export default class VideoPlayer extends Component {
                     imageStyle={[ styles.controls.vignette ]}>
                     <View style={ styles.controls.topControlGroup }>
                         { backControl }
-                        <View style={ styles.controls.pullRight }>
+                        { this.renderTitle() }
+                        <View style={styles.controls.pullRight }>
                             { volumeControl }
                             { fullscreenControl }
                         </View>
@@ -966,7 +967,7 @@ export default class VideoPlayer extends Component {
                         styles.controls.bottomControlGroup
                     ]}>
                         { playPauseControl }
-                        { this.renderTitle() }
+
                         { timerControl }
 
                     </View>
@@ -990,7 +991,7 @@ export default class VideoPlayer extends Component {
                         styles.seekbar.fill,
                         {
                             width: this.state.seekerFillWidth,
-                            backgroundColor: this.props.seekColor || '#FFF'
+                            backgroundColor: this.props.seekColor || 'orange'
                         }
                     ]}/>
                 </View>
@@ -1213,13 +1214,14 @@ const styles = {
         text: {
             backgroundColor: 'transparent',
             color: '#FFF',
-            fontSize: 14,
+            fontSize: 16,
             textAlign: 'center',
         },
         pullRight: {
+            flex: 1,
+            justifyContent: 'flex-end',
             flexDirection: 'row',
             alignItems: 'center',
-            justifyContent: 'center',
         },
         top: {
             flex: 1,
@@ -1232,9 +1234,8 @@ const styles = {
             justifyContent: 'flex-end',
         },
         topControlGroup: {
-            alignSelf: 'stretch',
             alignItems: 'center',
-            justifyContent: 'space-between',
+            justifyContent: 'flex-start',
             flexDirection: 'row',
             width: null,
             margin: 12,
@@ -1261,7 +1262,7 @@ const styles = {
         },
         title: {
             alignItems: 'center',
-            flex: 0.6,
+            paddingLeft: 5,
             flexDirection: 'column',
             padding: 0,
         },
@@ -1302,9 +1303,6 @@ const styles = {
             marginTop: -24,
             marginLeft: -24,
             padding: 16,
-        },
-        icon: {
-            marginLeft:7
         }
     }),
     seekbar: StyleSheet.create({
@@ -1316,14 +1314,14 @@ const styles = {
         },
         track: {
             backgroundColor: '#333',
-            height: 1,
+            height: 3,
             position: 'relative',
             top: 14,
             width: '100%'
         },
         fill: {
             backgroundColor: '#FFF',
-            height: 1,
+            height: 3,
             width: '100%'
         },
         handle: {
@@ -1336,8 +1334,8 @@ const styles = {
             borderRadius: 12,
             position: 'relative',
             top: 8, left: 8,
-            height: 12,
-            width: 12,
+            height: 15,
+            width: 15,
         },
     })
 };
