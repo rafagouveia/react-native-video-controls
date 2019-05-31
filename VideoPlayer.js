@@ -875,7 +875,6 @@ export default class VideoPlayer extends Component {
                         { backControl }
                         { this.renderTitle() }
                         <View style={styles.controls.pullRight }>
-                            { volumeControl }
                             { fullscreenControl }
                         </View>
                     </View>
@@ -1264,10 +1263,11 @@ const styles = {
             alignItems: 'center',
             paddingLeft: 5,
             flexDirection: 'column',
-            padding: 0,
+            padding: 0
         },
         titleText: {
             textAlign: 'center',
+            fontFamily: 'Orkney Bold Italic'
         },
         timer: {
             width: 80,
@@ -1277,6 +1277,7 @@ const styles = {
             color: '#FFF',
             fontSize: 11,
             textAlign: 'right',
+            fontFamily: 'Orkney Bold'
         },
     }),
     volume: StyleSheet.create({
