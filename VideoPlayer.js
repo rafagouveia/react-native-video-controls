@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import Video from 'react-native-video';
+import {Picker, Icon} from "native-base";
+
 import {
     TouchableWithoutFeedback,
     TouchableHighlight,
@@ -30,6 +32,7 @@ export default class VideoPlayer extends Component {
         muted:                          false,
         title:                          '',
         rate:                           1,
+        textTracks:                     []
     };
 
     constructor( props ) {
@@ -46,8 +49,12 @@ export default class VideoPlayer extends Component {
             muted: this.props.muted,
             volume: this.props.volume,
             rate: this.props.rate,
-            // Controls
+            // Custom Controls
+            selected: "key1",
+            subtitleActive: false,
 
+
+            // Controls
             isFullscreen: this.props.resizeMode === 'cover' || false,
             showTimeRemaining: true,
             volumeTrackWidth: 0,
@@ -150,7 +157,11 @@ export default class VideoPlayer extends Component {
     }
 
 
-
+    onValueChange(value: string) {
+        this.setState({
+            selected: value
+        });
+    }
     /**
     | -------------------------------------------------------
     | Events
@@ -942,11 +953,27 @@ export default class VideoPlayer extends Component {
     /**
      * Render bottom control group and wrap it in a holder
      */
+
+
+
     renderBottomControls() {
 
         const timerControl = this.props.disableTimer ? this.renderNullControl() : this.renderTimer();
         const seekbarControl = this.props.disableSeekbar ? this.renderNullControl() : this.renderSeekbar();
         const playPauseControl = this.props.disablePlayPause ? this.renderNullControl() : this.renderPlayPause();
+        const renderToggleSubtitle  = () => {
+            const {subtitleActive} = this.state;
+            return (
+                <View>
+                    <TouchableWithoutFeedback onPress={() => {this.setState({subtitleActive: !subtitleActive})}}>
+                        <Icon
+                            style={{color: subtitleActive ? '#fff' : 'rgba(255,255,255,0.38)', fontSize: 35}}
+                            type='MaterialCommunityIcons'
+                            name="closed-caption" />
+                    </TouchableWithoutFeedback>
+                </View>
+            )
+        }
 
         return(
             <Animated.View style={[
@@ -966,7 +993,7 @@ export default class VideoPlayer extends Component {
                         styles.controls.bottomControlGroup
                     ]}>
                         { playPauseControl }
-
+                        { renderToggleSubtitle() }
                         { timerControl }
 
                     </View>
@@ -1110,13 +1137,15 @@ export default class VideoPlayer extends Component {
                     <Video
                         { ...this.props }
                         ref={ videoPlayer => this.player.ref = videoPlayer }
-
                         resizeMode={ this.state.resizeMode }
+                        hls={true}
                         volume={ this.state.volume }
                         paused={ this.state.paused }
                         muted={ this.state.muted }
                         rate={ this.state.rate }
-
+                        selectedTextTrack={this.state.subtitleActive ? this.props.selectedTextTrack : {
+                            type: 'disabled'
+                        }}
                         onLoadStart={ this.events.onLoadStart }
                         onProgress={ this.events.onProgress }
                         onError={ this.events.onError }
